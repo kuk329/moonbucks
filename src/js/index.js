@@ -14,6 +14,10 @@
 // -[v] 모달창이 뜰때 메뉴 이름은 기본적으로 원래 이름이 들어가 있다. (prompt 함수 두번째 인자에 삽입..)
 // -[v] 수정 완료 버튼을 누르면 해당 메뉴의 이름이 바뀐다.
 
+// TODO 메뉴 삭제
+// -[v] 메뉴 삭제버튼을 누르면 확인하는 prompt 창이 뜨고 확인을 누르면 해당 메뉴를 삭제한다.
+// -[v] 메뉴의 총 개수도 업데이트 한다.
+
 const menuInput = document.querySelector("#espresso-menu-name"); // 메뉴 input.
 const menuAddBtn = document.querySelector("#espresso-menu-submit-button"); // 메뉴 추가 버튼.
 const ul = document.querySelector("#espresso-menu-list"); // 메뉴 목록을 나타낼 리스트.
@@ -84,8 +88,23 @@ function App() {
       // 메뉴 이름 변경
       $menuName.innerText = editMenuName;
     }
+
+    // ********* 메뉴 삭제 ********
+    if (e.target.classList.contains("menu-remove-button")) {
+      const result = confirm("해당 메뉴를 삭제하시겠습니까?");
+      if (result) {
+        // 확인 버튼 클릭시 해당 메뉴 삭제
+        e.target.closest("li").remove();
+
+        // count 수 업데이트
+        const menuItemList = document.querySelectorAll(".menu-list-item");
+        const menuItemCount = menuItemList.length;
+
+        menuCount.innerText = `총 ${menuItemCount}개`;
+      }
+    }
   });
-}
+} // end of App()
 
 App();
 
@@ -108,7 +127,3 @@ function createMenu(menuName) {
 </li>`;
   ul.insertAdjacentHTML("beforeend", menuItemTemplate);
 } // end of App()
-
-// TODO 메뉴 삭제
-// -[] 메뉴 삭제버튼을 누르면 확인하는 prompt 창이 뜨고 확인을 누르면 해당 메뉴를 삭제한다.
-// -[] 메뉴의 총 개수도 업데이트 한다.
