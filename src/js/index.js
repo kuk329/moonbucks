@@ -26,11 +26,6 @@ const menuCount = document.querySelector(".menu-count");
 
 function App() {
   // ********* 메뉴 추가 ********
-
-  // 페이지 reload 막음.
-  // menuForm.addEventListener("submit",e=>{
-  //     e.preventDefault();
-  // })
   menuInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       // ***.엔터키를 입력했을때
@@ -41,16 +36,9 @@ function App() {
       }
       e.preventDefault(); // 새로고침 방지
 
-      // (1) 메뉴 추가
-      createMenu(menuName);
-
-      // (2) input text 초기화
-      menuInput.value = "";
-      const menuItemList = document.querySelectorAll(".menu-list-item");
-      const menuItemCount = menuItemList.length;
-
-      // count 수 업데이트
-      menuCount.innerText = `총 ${menuItemCount}개`;
+      createMenu(menuName); // 메뉴 추가
+      menuInput.value = ""; // input text 초기화
+      countMenuList(); // count 수 업데이트
     }
   });
 
@@ -62,16 +50,9 @@ function App() {
       return;
     }
 
-    // (1) 메뉴 추가
-    createMenu(menuName);
-
-    // (2) input text 초기화
-    menuInput.value = "";
-    const menuItemList = document.querySelectorAll(".menu-list-item");
-    const menuItemCount = menuItemList.length;
-
-    // count 수 업데이트
-    menuCount.innerText = `총 ${menuItemCount}개`;
+    createMenu(menuName); // 메뉴 추가
+    menuInput.value = ""; // input text 초기화
+    countMenuList(); // count 수 업데이트
   });
 
   // ********* 메뉴 수정 ********
@@ -79,29 +60,12 @@ function App() {
     //console.log(e.target);
     if (e.target.classList.contains("menu-edit-button")) {
       //console.log("수정버튼 클릭!");
-      const $menuName = e.target.closest("li").querySelector(".menu-name");
-      const editMenuName = prompt(
-        "수정할 이름을 입력해 주세요.",
-        $menuName.innerText
-      );
-
-      // 메뉴 이름 변경
-      $menuName.innerText = editMenuName;
+      updateMenuName(e);
     }
 
     // ********* 메뉴 삭제 ********
     if (e.target.classList.contains("menu-remove-button")) {
-      const result = confirm("해당 메뉴를 삭제하시겠습니까?");
-      if (result) {
-        // 확인 버튼 클릭시 해당 메뉴 삭제
-        e.target.closest("li").remove();
-
-        // count 수 업데이트
-        const menuItemList = document.querySelectorAll(".menu-list-item");
-        const menuItemCount = menuItemList.length;
-
-        menuCount.innerText = `총 ${menuItemCount}개`;
-      }
+      removeMenu(e);
     }
   });
 } // end of App()
@@ -126,4 +90,33 @@ function createMenu(menuName) {
   </button>
 </li>`;
   ul.insertAdjacentHTML("beforeend", menuItemTemplate);
-} // end of App()
+} // end of createMenu()
+
+function countMenuList() {
+  const menuItemList = document.querySelectorAll(".menu-list-item");
+  const menuItemCount = menuItemList.length;
+
+  menuCount.innerText = `총 ${menuItemCount}개`;
+}
+
+const updateMenuName = (e) => {
+  const $menuName = e.target.closest("li").querySelector(".menu-name");
+  const editMenuName = prompt(
+    "수정할 이름을 입력해 주세요.",
+    $menuName.innerText
+  );
+
+  // 메뉴 이름 변경
+  $menuName.innerText = editMenuName;
+};
+
+const removeMenu = (e) => {
+  const result = confirm("해당 메뉴를 삭제하시겠습니까?");
+  if (result) {
+    // 확인 버튼 클릭시 해당 메뉴 삭제
+    e.target.closest("li").remove();
+
+    // count 수 업데이트
+    countMenuList();
+  }
+};
