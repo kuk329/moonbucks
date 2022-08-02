@@ -9,6 +9,11 @@
 // -[v] 빈값을 입력하고 엔터키를 눌러도 메뉴가 추가되지 않고 prompt 창을 띄운다.
 // -[v] 메뉴가 추가될때마다 총 개수의 정보가 변경된다.
 
+// TODO 메뉴 수정
+// -[v] 수정 버튼을 누르면 모달 창이 뜨고 수정 메뉴 이름을 입력받는다.
+// -[v] 모달창이 뜰때 메뉴 이름은 기본적으로 원래 이름이 들어가 있다. (prompt 함수 두번째 인자에 삽입..)
+// -[v] 수정 완료 버튼을 누르면 해당 메뉴의 이름이 바뀐다.
+
 const menuInput = document.querySelector("#espresso-menu-name"); // 메뉴 input.
 const menuAddBtn = document.querySelector("#espresso-menu-submit-button"); // 메뉴 추가 버튼.
 const ul = document.querySelector("#espresso-menu-list"); // 메뉴 목록을 나타낼 리스트.
@@ -16,6 +21,8 @@ const menuForm = document.querySelector("submit");
 const menuCount = document.querySelector(".menu-count");
 
 function App() {
+  // ********* 메뉴 추가 ********
+
   // 페이지 reload 막음.
   // menuForm.addEventListener("submit",e=>{
   //     e.preventDefault();
@@ -62,6 +69,22 @@ function App() {
     // count 수 업데이트
     menuCount.innerText = `총 ${menuItemCount}개`;
   });
+
+  // ********* 메뉴 수정 ********
+  ul.addEventListener("click", (e) => {
+    //console.log(e.target);
+    if (e.target.classList.contains("menu-edit-button")) {
+      //console.log("수정버튼 클릭!");
+      const $menuName = e.target.closest("li").querySelector(".menu-name");
+      const editMenuName = prompt(
+        "수정할 이름을 입력해 주세요.",
+        $menuName.innerText
+      );
+
+      // 메뉴 이름 변경
+      $menuName.innerText = editMenuName;
+    }
+  });
 }
 
 App();
@@ -85,11 +108,6 @@ function createMenu(menuName) {
 </li>`;
   ul.insertAdjacentHTML("beforeend", menuItemTemplate);
 } // end of App()
-
-// TODO 메뉴 수정
-// -[] 수정 버튼을 누르면 모달 창이 뜨고 수정 메뉴 이름을 입력받는다.
-// -[] 모달창이 뜰때 메뉴 이름은 기본적으로 원래 이름이 들어가 있다.
-// -[] 수정 완료 버튼을 누르면 해당 메뉴의 이름이 바뀐다.
 
 // TODO 메뉴 삭제
 // -[] 메뉴 삭제버튼을 누르면 확인하는 prompt 창이 뜨고 확인을 누르면 해당 메뉴를 삭제한다.
